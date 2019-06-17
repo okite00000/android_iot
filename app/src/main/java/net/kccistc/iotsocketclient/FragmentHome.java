@@ -5,6 +5,7 @@ package net.kccistc.iotsocketclient;
 
 import android.app.Fragment;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,6 +13,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.StrictMode;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+
 
 /**
  * Created by user on 2017-12-27.
@@ -21,6 +31,7 @@ public class FragmentHome extends Fragment {
     View view;
     MainActivity mainActivity;
     ImageButton imageButtonLight;
+    ImageButton btn;
     boolean lightButtonState = false;
     @Nullable
     @Override
@@ -28,6 +39,20 @@ public class FragmentHome extends Fragment {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         view = inflater.inflate(R.layout.fragment_home,container,false);
         mainActivity = (MainActivity) getActivity();
+
+
+        ImageButton data = (ImageButton) view.findViewById(R.id.data);
+        data.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://192.168.1.100/ondo.html"));
+
+                startActivity(intent);
+            }
+        });
+
+
+
         imageButtonLight = (ImageButton) view.findViewById(R.id.imageButtonLight);
 
         imageButtonLight.setOnClickListener(new View.OnClickListener() {
@@ -42,9 +67,18 @@ public class FragmentHome extends Fragment {
             }
         });
 
+
+
         colorImageButton();
         return view;
+
+
+
     }
+
+
+
+
     public void updateImageButton(String strCmd) {
 //        Toast.makeText(getActivity(),"TEST: "+strCmd,Toast.LENGTH_SHORT).show();
         if(strCmd.equals("ON")) {
@@ -68,4 +102,7 @@ public class FragmentHome extends Fragment {
         }
 
     }
+
+
+
 }

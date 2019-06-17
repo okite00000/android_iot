@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy smtp = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(smtp);
-
+        NetworkUtil util = new NetworkUtil();
         mTextMessage = (TextView) findViewById(R.id.message);
 
 
