@@ -29,18 +29,16 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "MainActivity";
     static final int REQUEST_CODE_SETTING_ACTIVITY = 1001;
     FragmentHome fragmentHome;
-    FragmentDashboard fragmentDashboard;
-    FragmentCameraview fragmentCameraview;
-    FragmentMessage fragmentMessage;
+
     int bottomNavigationIndex = 0;
     Handler handler;
     static Socket socket=null;
     static SocketClientThread socketClientThread;
-    static String serverIp = "192.168.1.75";
+    static String serverIp = "192.168.1.100";
     static String serverPort = "5000";
-    static String clientId = "KKSSMT";
+    static String clientId = "BABO";
     static String clientPw = "PASSWD";
-    static String ardId = "KKSARD";
+    static String ardId = "babu";
     static String avrId = "BABU";
     static String sm7QtId = "SM7QT";
     private TextView mTextMessage;
@@ -57,21 +55,7 @@ public class MainActivity extends AppCompatActivity {
                     mTextMessage.setText(R.string.title_home);
                     replaceFragment(fragmentHome);
                     return true;
-                case R.id.navigation_dashboard:
-                    bottomNavigationIndex = 1;
-                    mTextMessage.setText(R.string.title_dashboard);
-                    replaceFragment(fragmentDashboard);
-                    return true;
-                case R.id.navigation_notifications:
-                    bottomNavigationIndex = 2;
-                    mTextMessage.setText(R.string.title_notifications);
-                    replaceFragment(fragmentCameraview);
-                    return true;
-                case R.id.navigation_message:
-                    bottomNavigationIndex = 3;
-                    mTextMessage.setText(R.string.title_message);
-                    replaceFragment(fragmentMessage);
-                    return true;
+
             }
             return false;
         }
@@ -105,13 +89,10 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(smtp);
 
         mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
 
         fragmentHome = new FragmentHome();
-        fragmentDashboard = new FragmentDashboard();
-        fragmentCameraview = new FragmentCameraview();
-        fragmentMessage = new FragmentMessage();
+
 
         replaceFragment(fragmentHome);
         handler = new Handler();
@@ -237,8 +218,6 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     mTextMessage.setText(recvStr.substring(0,recvStr.length() -1 ));
-                    if(bottomNavigationIndex == 3)
-                        fragmentMessage.appendTextView(recvStr);
 
                     String[] splitLists = recvStr.toString().split("\\[|]|@|\\n");
                     if(bottomNavigationIndex == 0)
@@ -252,24 +231,7 @@ public class MainActivity extends AppCompatActivity {
                         else if(splitLists.length >= 3)
                             fragmentHome.updateImageButton(splitLists[2]);
                     }
-                    else if (bottomNavigationIndex == 1) {
-                        if(splitLists[2].equals("GETCONDITION") || splitLists[2].equals("GETCONTROL") ) {
-                            fragmentDashboard.updateTextView(splitLists);
-                            getstate_cmd_check = false;
-                        }
-                        else {
 
-                            fragmentDashboard.updateImageView(splitLists[2]);
-                        }
-                    }
-                    else if (bottomNavigationIndex == 2) {
-                        if(splitLists[2].equals("TIMERSTART") || splitLists[2].equals("TIMERSTOP") ) {
-                            fragmentCameraview.updateToggleButtonTimer(splitLists[2]);
-                        } else if(splitLists[2].equals("CAMERASTART") || splitLists[2].equals("CAMERASTOP") ) {
-                            fragmentCameraview.updateWebviewCamera(splitLists[2]);
-                        }
-
-                    }
                 }
             });
         }
